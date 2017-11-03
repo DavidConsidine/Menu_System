@@ -23,13 +23,19 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void LoadMenu();
 
+	UFUNCTION(BlueprintCallable)
+	void InGameLoadMenu();
+
 	UFUNCTION(Exec)
 	void Host();
 	
 	UFUNCTION(Exec)
 	void Join(const FString& Address);
 
+	void ExitGame();
+
 private:
-	TSubclassOf<class UUserWidget> MenuClass;
-	class UMainMenu* Menu;
+	TSubclassOf<class UMenuWidget> MenuClass;
+	TSubclassOf<class UMenuWidget> InGameMenuClass;
+	class UMenuWidget* Menu;
 };
