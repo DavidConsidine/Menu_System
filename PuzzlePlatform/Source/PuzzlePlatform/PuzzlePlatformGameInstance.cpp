@@ -51,6 +51,7 @@ void UPuzzlePlatformGameInstance::Host()
 	{
 		Menu->Teardown();
 	}
+
 	UEngine* Engine = GetEngine();
 	if (!ensure(Engine != nullptr))
 	{
@@ -67,8 +68,13 @@ void UPuzzlePlatformGameInstance::Host()
 	World->ServerTravel("/Game/ThirdPersonCPP/Maps/ThirdPersonExampleMap?listen");
 }
 
-void UPuzzlePlatformGameInstance::Join(FString& Address)
+void UPuzzlePlatformGameInstance::Join(const FString& Address)
 {
+	if (Menu != nullptr)
+	{
+		Menu->Teardown();
+	}
+
 	UEngine* Engine = GetEngine();
 	if (!ensure(Engine != nullptr))
 	{
