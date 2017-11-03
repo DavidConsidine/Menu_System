@@ -4,8 +4,11 @@
 
 #include "Engine/Engine.h"
 #include "UObject/ConstructorHelpers.h"
+#include "Blueprint/UserWidget.h"
 
+#include "MenuSystem/MainMenu.h"
 #include "MenuSystem/MenuWidget.h"
+
 
 
 UPuzzlePlatformGameInstance::UPuzzlePlatformGameInstance(const FObjectInitializer &ObjectInitializer)
@@ -24,8 +27,6 @@ UPuzzlePlatformGameInstance::UPuzzlePlatformGameInstance(const FObjectInitialize
 	}
 	InGameMenuClass = InGameMenuBPClass.Class;
 
-	//UE_LOG(LogTemp, Warning, TEXT("Found class %s"), *MainMenuWidgetClass.Class->GetName());
-
 }
 
 void UPuzzlePlatformGameInstance::Init()
@@ -40,7 +41,7 @@ void UPuzzlePlatformGameInstance::LoadMenu()
 		return;
 	}
 
-	Menu = CreateWidget<UMenuWidget>(this, MenuClass);
+	Menu = CreateWidget<UMainMenu>(this, MenuClass);
 	if (!ensure(Menu != nullptr))
 	{
 		return;
@@ -111,7 +112,13 @@ void UPuzzlePlatformGameInstance::Join(const FString& Address)
 	PlayerController->ClientTravel(Address, ETravelType::TRAVEL_Absolute);
 }
 
-void UPuzzlePlatformGameInstance::ExitGame()
+void UPuzzlePlatformGameInstance::LoadMainMenu()
 {
-
+	APlayerController* PlayerController = GetFirstLocalPlayerController();
+	if (!ensure(PlayerController != nullptr))
+	{
+		return;
+	}
+	PlayerController->ClientTravel("/Game/MenuSystem/MainMenu", ETravelType::TRAVEL_Absolute);
 }
+
